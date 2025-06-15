@@ -1,52 +1,28 @@
 const TYPOGRAPHY = Object.freeze({
-  title1: {
-    fontSize: "24px",
-    fontWeight: 700,
-    lineHeight: "24px",
-    letterSpacing: 0
+  fontSize: {
+    xxl: "24px",
+    xl: "22px",
+    lg: "20px",
+    md: "18px",
+    sm: "16px",
+    xs: "14px",
+    xxs: "10px"
   },
-  title2: {
-    fontSize: "22px",
-    fontWeight: 700,
-    lineHeight: "24px",
-    letterSpacing: 0
+
+  fontWeight: {
+    bold: 700,
+    regular: 500,
   },
-  title3: {
-    fontSize: "18px",
-    fontWeight: 700,
-    lineHeight: "18px",
-    letterSpacing: 0
+
+  lineHeight: {
+    xxl: "24px",
+    lg: "20px",
+    md: "18px",
+    sm: "16px",
+    xs: "14px",
+    xxs: "10px"
   },
-  body1: {
-    fontSize: "20px",
-    fontWeight: 500,
-    lineHeight: "20px",
-    letterSpacing: 0
-  },
-  body2: {
-    fontSize: "14px",
-    fontWeight: 500,
-    lineHeight: "14px",
-    letterSpacing: 0
-  },
-  body2Bold: {
-    fontSize: "14px",
-    fontWeight: 700,
-    lineHeight: "14px",
-    letterSpacing: 0
-  },
-  caption: {
-    fontSize: "16px",
-    fontWeight: 500,
-    lineHeight: "16px",
-    letterSpacing: 0
-  },
-  small:{
-    fontSize: "10px",
-    fontWeight: 500,
-    lineHeight: "10px",
-    letterSpacing: 0
-  }
+
 }) 
 
 const COLOR = Object.freeze({
