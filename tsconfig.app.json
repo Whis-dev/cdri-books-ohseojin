@@ -15,6 +15,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "fonts/*": ["./public/fonts/*"],
+      "icons/*": ["./public/icons/*"]
+    },
 
     /* Linting */
     "strict": true,
@@ -24,5 +30,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["public", "src"]
+  "include": ["**/*.ts", "**/*.tsx", "vite.config.ts"]
 }
