@@ -1,13 +1,15 @@
 import { atomWithStorage } from 'jotai/utils';
 
-const bookKeywords = atomWithStorage<Array<Record<string, string>>>(
-  'bookKeywords',
-  [],
-);
+import type { IDocument } from '@/types/book';
 
-const faboriteBooks = atomWithStorage<Array<Record<string, string>>>(
-  'faboriteBooks',
-  [],
-);
+const bookKeywordsAtom = atomWithStorage<Array<string>>('bookKeywords', []);
 
-export { bookKeywords, faboriteBooks };
+const favoriteBooksAtom = atomWithStorage<{
+  favoriteBookIds: Array<string>;
+  favoriteBooks: Array<IDocument>;
+}>('favoriteBooks', {
+  favoriteBookIds: [],
+  favoriteBooks: [],
+});
+
+export { bookKeywordsAtom, favoriteBooksAtom };
