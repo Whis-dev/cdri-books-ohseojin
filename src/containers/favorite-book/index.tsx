@@ -40,8 +40,10 @@ export default function FavoriteBook() {
   });
 
   useEffect(() => {
-    if (favoriteBooks.length && pageRef.current === 0) {
-      setFavoriteBookList(favoriteBooks[0]);
+    if (favoriteBooks.length) {
+      setFavoriteBookList(
+        favoriteBooks.filter((_, index) => index <= pageRef.current).flat(),
+      );
     }
   }, [favoriteBooks]);
 

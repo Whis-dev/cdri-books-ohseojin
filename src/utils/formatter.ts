@@ -30,8 +30,6 @@ const formatTwoDimension = <T>(
     twoDimension.push(original.splice(0, itemLength));
   }
 
-  console.log(twoDimension);
-
   return twoDimension;
 };
 
