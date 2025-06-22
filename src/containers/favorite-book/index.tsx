@@ -1,123 +1,19 @@
-import { useCallback, useMemo, useState } from 'react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { useTheme } from '@emotion/react';
 
-import {
-  getFavoriteBooksAction,
-  setFavoriteBooksAction,
-} from '@/atoms/book/action';
-import { BOOK_COLUMNS } from '@/constants/book';
-import type { IDocument } from '@/types/book';
+import { getFavoriteBooksAction } from '@/atoms/book/action';
 
-import { BookIcon, LikeFillIcon, LikeLineIcon } from 'icons/index';
+import { BookIcon } from 'icons/index';
 import Typography from '@/components/common/data-display/Typography';
 import Nothing from '@/components/common/feedback/Nothing';
-import Button from '@/components/common/form/Button';
-import CollapsibleTable from '@/components/common/data-display/CollapsibleTable';
+import BookList from '@/components/book/BookList';
 
 export default function FavoriteBook() {
-  const [selectedRows, setSelectedRows] = useState<Array<string>>([]);
-
   const { favoriteBookIds, favoriteBooks } = useAtomValue(
     getFavoriteBooksAction,
   );
-  const setFavoriteBooks = useSetAtom(setFavoriteBooksAction);
 
   const theme = useTheme();
-
-  const handleClickBookDetail = (rowKey: string) => () => {
-    setSelectedRows(prev => [...prev, rowKey]);
-  };
-
-  const handleClickAddFavoriteBook = useCallback(
-    (book: IDocument) => () => {
-      setFavoriteBooks(book);
-    },
-    [setFavoriteBooks],
-  );
-
-  const generatedTableRows = useMemo(
-    () =>
-      favoriteBooks.map(book => ({
-        key: book.isbn,
-        thumbnail: (
-          <button
-            onClick={handleClickAddFavoriteBook(book)}
-            css={{
-              position: 'relative',
-              margin: '0px 48px',
-              border: 'none',
-
-              '> svg': {
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                width: '16px',
-                height: '16px',
-              },
-            }}
-          >
-            <div
-              css={{
-                width: '48px',
-                height: '68px',
-
-                '> img': {
-                  widht: '100%',
-                  height: '100%',
-                },
-              }}
-            >
-              <img src={book.thumbnail} />
-            </div>
-
-            {favoriteBookIds.includes(book.isbn) ? (
-              <LikeFillIcon />
-            ) : (
-              <LikeLineIcon />
-            )}
-          </button>
-        ),
-        title: (
-          <div css={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-            <Typography
-              variant="title3"
-              css={{ color: theme.color.text.primary }}
-            >
-              {book.title}
-            </Typography>
-            <Typography
-              variant="body2"
-              css={{ color: theme.color.text.secondary }}
-            >
-              {book.authors}
-            </Typography>
-          </div>
-        ),
-        price: (
-          <Typography
-            variant="title3"
-            css={{
-              marginRight: '56px',
-              color: theme.color.text.primary,
-            }}
-          >
-            {book.price}
-          </Typography>
-        ),
-        buyAction: (
-          <Button size="medium" color="primary" as="a" href={book.url}>
-            구매하기
-          </Button>
-        ),
-        viewDetail: (
-          <Button size="medium" onClick={handleClickBookDetail(book.isbn)}>
-            상세보기
-          </Button>
-        ),
-      })) || [],
-    [favoriteBooks, theme, favoriteBookIds, handleClickAddFavoriteBook],
-  );
 
   return (
     <article>
@@ -125,7 +21,7 @@ export default function FavoriteBook() {
 
       <p
         css={{
-          marginTop: '24px',
+          margin: '24px 0 36px',
           color: theme.color.text.primary,
 
           'span:first-of-type': {
@@ -153,11 +49,7 @@ export default function FavoriteBook() {
       </p>
 
       {favoriteBookIds.length ? (
-        <CollapsibleTable
-          selectedRows={selectedRows}
-          columns={BOOK_COLUMNS}
-          rows={generatedTableRows}
-        />
+        <BookList data={favoriteBooks} infiniteRowId="favorite-book-row" />
       ) : (
         <Nothing
           icon={<BookIcon />}

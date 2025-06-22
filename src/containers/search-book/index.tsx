@@ -1,51 +1,32 @@
-import {
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-  type KeyboardEvent,
-} from 'react';
+import { useRef, useState, type KeyboardEvent } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useTheme } from '@emotion/react';
 
 import {
   getBookKeywordsAction,
-  getFavoriteBooksAction,
   removeBookKeywordsAction,
   setBookKeywordsAction,
-  setFavoriteBooksAction,
 } from '@/atoms/book/action';
-import { BOOK_COLUMNS } from '@/constants/book';
 import useIntersectionObserver from '@/hooks/common/useIntersectionObserver';
-import type { IDocument } from '@/types/book';
 
-import {
-  BookIcon,
-  CloseIcon,
-  LikeFillIcon,
-  LikeLineIcon,
-  SearchIcon,
-} from 'icons/index';
+import { BookIcon, CloseIcon, SearchIcon } from 'icons/index';
 import Typography from '@/components/common/data-display/Typography';
 import Nothing from '@/components/common/feedback/Nothing';
 import Button from '@/components/common/form/Button';
 import useBooksQuery from '@/hooks/query/useBooksQuery';
-import CollapsibleTable from '@/components/common/data-display/CollapsibleTable';
+import BookList from '@/components/book/BookList';
 
 export default function SearchBook() {
   const [isSearchInputFocused, setSearchInputFocused] =
     useState<boolean>(false);
   const [searchKeyword, setSearchKeyword] = useState<string>('');
-  const [selectedRows, setSelectedRows] = useState<Array<string>>([]);
 
   const searchBookInputRef = useRef<HTMLInputElement>(null);
 
   const bookKeywords = useAtomValue(getBookKeywordsAction);
-  const { favoriteBookIds } = useAtomValue(getFavoriteBooksAction);
 
   const setBookKeyword = useSetAtom(setBookKeywordsAction);
   const removeBookKeyword = useSetAtom(removeBookKeywordsAction);
-  const setFavoriteBooks = useSetAtom(setFavoriteBooksAction);
 
   const theme = useTheme();
 
@@ -76,23 +57,6 @@ export default function SearchBook() {
     searchBookInputRef.current.value = keyword;
   };
 
-  const handleClickBookDetail = (rowKey: string) => () => {
-    setSelectedRows(prev => {
-      const isSelectedRow = prev.includes(rowKey);
-
-      return isSelectedRow
-        ? prev.filter(key => key !== rowKey)
-        : [...prev, rowKey];
-    });
-  };
-
-  const handleClickAddFavoriteBook = useCallback(
-    (book: IDocument) => () => {
-      setFavoriteBooks(book);
-    },
-    [setFavoriteBooks],
-  );
-
   const handleFocusSearchInput = () => {
     if (bookKeywords.length) {
       setSearchInputFocused(true);
@@ -109,288 +73,6 @@ export default function SearchBook() {
       setBookKeyword(event.currentTarget.value);
     }
   };
-
-  const generatedTableRows = useMemo(
-    () =>
-      data?.pages
-        .map(page => page.documents)
-        .flat()
-        .map(book => ({
-          key: book.isbn,
-          thumbnail: (
-            <button
-              onClick={handleClickAddFavoriteBook(book)}
-              css={{
-                position: 'relative',
-                margin: '0px 48px',
-                border: 'none',
-
-                '> svg': {
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '16px',
-                  height: '16px',
-                },
-              }}
-            >
-              <div
-                css={{
-                  width: '48px',
-                  height: '68px',
-
-                  '> img': {
-                    widht: '100%',
-                    height: '100%',
-                  },
-                }}
-              >
-                <img loading="lazy" src={book.thumbnail} />
-              </div>
-
-              {favoriteBookIds.includes(book.isbn) ? (
-                <LikeFillIcon />
-              ) : (
-                <LikeLineIcon />
-              )}
-            </button>
-          ),
-          title: (
-            <>
-              <Typography
-                variant="title3"
-                css={{
-                  display: 'flex',
-                  width: '408px',
-                  marginRight: '22px',
-                  alignItems: 'center',
-                  gap: '16px',
-                  color: theme.color.text.primary,
-                }}
-              >
-                <span
-                  css={{
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {book.title}
-                </span>
-
-                <Typography
-                  variant="body2"
-                  css={{
-                    color: theme.color.text.secondary,
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    flex: '0 0 30%',
-                  }}
-                >
-                  {book.authors}
-                </Typography>
-              </Typography>
-            </>
-          ),
-          price: (
-            <Typography
-              variant="title3"
-              css={{
-                width: '132px',
-                marginRight: 'auto',
-                color: theme.color.text.primary,
-              }}
-            >
-              {book.price.toLocaleString()}원
-            </Typography>
-          ),
-          buyAction: (
-            <Button size="medium" color="primary" as="a" href={book.url}>
-              구매하기
-            </Button>
-          ),
-          viewDetail: (
-            <Button
-              size="medium"
-              onClick={handleClickBookDetail(book.isbn)}
-              css={{
-                marginLeft: '8px',
-              }}
-            >
-              상세보기
-            </Button>
-          ),
-          detail: (
-            <section
-              css={{
-                display: 'flex',
-                height: '324px',
-                padding: '24px 16px 40px 54px',
-              }}
-            >
-              <button
-                onClick={handleClickAddFavoriteBook(book)}
-                css={{
-                  position: 'relative',
-                  border: 'none',
-
-                  '> svg': {
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    width: '24px',
-                    height: '24px',
-                  },
-                }}
-              >
-                <div
-                  css={{
-                    width: '210px',
-                    height: '280px',
-
-                    '> img': {
-                      widht: '100%',
-                      height: '100%',
-                    },
-                  }}
-                >
-                  <img loading="lazy" src={book.thumbnail} />
-                </div>
-
-                {favoriteBookIds.includes(book.isbn) ? (
-                  <LikeFillIcon />
-                ) : (
-                  <LikeLineIcon />
-                )}
-              </button>
-
-              <dl
-                css={{
-                  width: '360px',
-                  margin: '0px 48px 0px 32px',
-                }}
-              >
-                <dt>
-                  <Typography
-                    variant="title3"
-                    css={{
-                      display: 'flex',
-                      width: '408px',
-                      marginRight: '22px',
-                      alignItems: 'center',
-                      gap: '16px',
-                      color: theme.color.text.primary,
-                    }}
-                  >
-                    <span
-                      css={{
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      {book.title}
-                    </span>
-
-                    <Typography
-                      variant="body2"
-                      css={{
-                        color: theme.color.text.secondary,
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        flex: '0 0 30%',
-                      }}
-                    >
-                      {book.authors}
-                    </Typography>
-                  </Typography>
-                </dt>
-
-                <dd>
-                  <Typography
-                    variant="body2bold"
-                    css={{
-                      lineHeight: '26px',
-                      color: theme.color.text.primary,
-                    }}
-                  >
-                    책 소개
-                  </Typography>
-
-                  <Typography
-                    variant="small"
-                    css={{
-                      lineHeight: '16px',
-                      color: theme.color.text.primary,
-                    }}
-                  >
-                    {book.contents}
-                  </Typography>
-                </dd>
-              </dl>
-
-              <div
-                css={{
-                  display: 'inline-flex',
-                  textAlign: 'right',
-                  alignItems: 'flex-end',
-                  flexDirection: 'column',
-                  flex: 1,
-                }}
-              >
-                <Button
-                  size="medium"
-                  onClick={handleClickBookDetail(book.isbn)}
-                  css={{
-                    marginLeft: '8px',
-                    marginBottom: 'auto',
-                  }}
-                >
-                  상세보기
-                </Button>
-
-                <Typography
-                  variant="title3"
-                  css={{
-                    width: '132px',
-                    color: theme.color.text.primary,
-                  }}
-                >
-                  {book.price.toLocaleString()}원
-                </Typography>
-
-                {book.sale_price && (
-                  <Typography
-                    variant="title3"
-                    css={{
-                      width: '132px',
-                      color: theme.color.text.primary,
-                    }}
-                  >
-                    {book.sale_price.toLocaleString()}원
-                  </Typography>
-                )}
-
-                <Button
-                  fullWidth
-                  size="medium"
-                  color="primary"
-                  as="a"
-                  href={book.url}
-                  css={{
-                    marginTop: '28px',
-                  }}
-                >
-                  구매하기
-                </Button>
-              </div>
-            </section>
-          ),
-        })) || [],
-    [data?.pages, favoriteBookIds, theme, handleClickAddFavoriteBook],
-  );
 
   return (
     <article
@@ -501,7 +183,7 @@ export default function SearchBook() {
 
       <p
         css={{
-          marginTop: '24px',
+          margin: '24px 0 36px',
           color: theme.color.text.primary,
 
           'span:first-of-type': {
@@ -529,11 +211,9 @@ export default function SearchBook() {
       </p>
 
       {data?.pages[0].meta.total_count ? (
-        <CollapsibleTable
+        <BookList
+          data={data?.pages.map(page => page.documents).flat() || []}
           infiniteRowId="search-book-row"
-          selectedRows={selectedRows}
-          columns={BOOK_COLUMNS}
-          rows={generatedTableRows}
         />
       ) : (
         <Nothing
