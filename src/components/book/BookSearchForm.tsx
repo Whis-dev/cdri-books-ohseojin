@@ -70,6 +70,9 @@ export default function BookSearchForm({
     <div
       css={{
         display: 'flex',
+        position: 'relative',
+        width: '568px',
+        height: '50px',
         marginTop: '28px',
       }}
     >
@@ -77,10 +80,13 @@ export default function BookSearchForm({
         onMouseEnter={handleFocusSearchInput}
         onMouseLeave={handleBlurSearchInput}
         css={{
+          position: 'absolute',
           width: '480px',
           marginRight: '16px',
           paddingBottom:
             isSearchInputFocused && bookKeywords.length ? '16px' : '0px',
+          top: 0,
+          left: 0,
           backgroundColor: theme.color.palette.lightGray,
           borderRadius: isSearchInputFocused ? '24px' : '100px',
         }}
@@ -158,7 +164,10 @@ export default function BookSearchForm({
         variant="outlined"
         onClick={handleClickDetailSearch}
         css={{
+          position: 'absolute',
           margin: '8px 0px 6px',
+          top: 0,
+          right: 0,
         }}
       >
         <Typography variant="body2">상세검색</Typography>
