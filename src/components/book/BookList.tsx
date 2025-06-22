@@ -77,7 +77,7 @@ export default function BookList({ data, infiniteRowId }: IBookListProps) {
                 height: '68px',
 
                 '> img': {
-                  widht: '100%',
+                  width: '100%',
                   height: '100%',
                 },
               }}
@@ -177,12 +177,14 @@ export default function BookList({ data, infiniteRowId }: IBookListProps) {
               onClick={handleClickAddFavoriteBook(book)}
               css={{
                 position: 'relative',
+                display: 'flex',
+                maxHeight: '280px',
                 border: 'none',
 
                 '> svg': {
                   position: 'absolute',
-                  top: 0,
-                  right: 0,
+                  top: '8px',
+                  right: '8px',
                   width: '24px',
                   height: '24px',
                 },
@@ -190,11 +192,11 @@ export default function BookList({ data, infiniteRowId }: IBookListProps) {
             >
               <div
                 css={{
-                  width: '210px',
-                  height: '280px',
+                  minWidth: '210px',
+                  maxHeight: '280px',
 
                   '> img': {
-                    widht: '100%',
+                    width: '100%',
                     height: '100%',
                   },
                 }}

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useTheme } from '@emotion/react';
 
@@ -7,17 +7,22 @@ import {
   removeBookKeywordsAction,
   setBookKeywordsAction,
 } from '@/atoms/book/action';
+import type { IUseBooksQueryParams } from '@/hooks/query/useBooksQuery';
 
 import { CloseIcon, SearchIcon } from 'icons/index';
 import Button from '@/components/common/form/Button';
 import Typography from '@/components/common/data-display/Typography';
 
-export default function BookSearchForm() {
+interface IBookSearchForm {
+  onSubmitBookSearch: ({ query, target }: IUseBooksQueryParams) => void;
+}
+
+export default function BookSearchForm({
+  onSubmitBookSearch,
+}: IBookSearchForm) {
   const [isSearchInputFocused, setSearchInputFocused] =
     useState<boolean>(false);
-  // const [searchKeyword, setSearchKeyword] = useState<string>('');
-
-  const searchBookInputRef = useRef<HTMLInputElement>(null);
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
 
   const bookKeywords = useAtomValue(getBookKeywordsAction);
 
@@ -33,11 +38,9 @@ export default function BookSearchForm() {
   };
 
   const handleClickSelectBookKeyword = (keyword: string) => () => {
-    if (!searchBookInputRef.current) return;
-
-    // setSearchKeyword(keyword);
+    onSubmitBookSearch({ query: keyword });
+    setSearchKeyword(keyword);
     setSearchInputFocused(false);
-    searchBookInputRef.current.value = keyword;
   };
 
   const handleFocusSearchInput = () => {
@@ -50,11 +53,15 @@ export default function BookSearchForm() {
     setSearchInputFocused(false);
   };
 
+  const handleChangeSearchInput = (event: React.BaseSyntheticEvent) => {
+    setSearchKeyword(event.target.value);
+  };
+
   const handleKeydownSearchInput = (
     event: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (event.key === 'Enter' && event.currentTarget.value) {
-      // setSearchKeyword(event.currentTarget.value);
+      onSubmitBookSearch({ query: searchKeyword });
       setBookKeyword(event.currentTarget.value);
     }
   };
@@ -89,10 +96,10 @@ export default function BookSearchForm() {
           <SearchIcon />
 
           <input
-            defaultValue=""
+            value={searchKeyword}
             placeholder="검색어를 입력하세요"
+            onChange={handleChangeSearchInput}
             onKeyDown={handleKeydownSearchInput}
-            ref={searchBookInputRef}
             css={{
               width: '100%',
               marginLeft: '11px',

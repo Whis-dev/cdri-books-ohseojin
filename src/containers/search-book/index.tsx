@@ -1,18 +1,25 @@
+import { useState } from 'react';
 import { useTheme } from '@emotion/react';
 
 import useIntersectionObserver from '@/hooks/common/useIntersectionObserver';
+import useBooksQuery, {
+  type IUseBooksQueryParams,
+} from '@/hooks/query/useBooksQuery';
 
 import { BookIcon } from 'icons/index';
 import Typography from '@/components/common/data-display/Typography';
 import Nothing from '@/components/common/feedback/Nothing';
-import useBooksQuery from '@/hooks/query/useBooksQuery';
 import BookList from '@/components/book/BookList';
 import BookSearchForm from '@/components/book/BookSearchForm';
 
 export default function SearchBook() {
+  const [bookQueryParams, setBookQueryParams] = useState<IUseBooksQueryParams>(
+    {},
+  );
+
   const theme = useTheme();
 
-  const { data, fetchNextPage } = useBooksQuery({ searchKeyword: '' });
+  const { data, fetchNextPage } = useBooksQuery(bookQueryParams);
 
   useIntersectionObserver({
     elementId: 'search-book-row',
@@ -25,6 +32,10 @@ export default function SearchBook() {
     },
   });
 
+  const handleSubmitBookSearch = (params: IUseBooksQueryParams) => {
+    setBookQueryParams(params);
+  };
+
   return (
     <article
       css={{
@@ -34,7 +45,7 @@ export default function SearchBook() {
     >
       <Typography variant="title2">도서 검색</Typography>
 
-      <BookSearchForm />
+      <BookSearchForm onSubmitBookSearch={handleSubmitBookSearch} />
 
       <p
         css={{

@@ -4,22 +4,22 @@ import { bookQueryKey } from '@/queryKey/book';
 import { requestBooks } from '@/apis/external';
 import type { SEARCH_BOOK_TARGET } from '@/constants/book';
 
-interface IUseBooksQueryParams {
-  searchKeyword?: string;
+export interface IUseBooksQueryParams {
+  query?: string;
   target?: keyof typeof SEARCH_BOOK_TARGET;
 }
 
 export default function useBooksQuery({
-  searchKeyword,
+  query = '',
   target,
 }: IUseBooksQueryParams) {
   return useInfiniteQuery({
-    enabled: !!searchKeyword,
+    enabled: !!query,
     initialPageParam: 1,
-    queryKey: bookQueryKey.searchBookList(searchKeyword || ''),
+    queryKey: bookQueryKey.searchBookList(query),
     queryFn: ({ pageParam }) =>
       requestBooks({
-        query: searchKeyword || '',
+        query: query || '',
         target,
         page: pageParam,
         size: 10,
