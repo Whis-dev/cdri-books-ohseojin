@@ -15,7 +15,7 @@ interface ICollapsibleTableRow {
 interface ICollapsibleTableProps {
   isHeader?: boolean;
   infiniteRowId?: string;
-  columns: Array<ICollapsibleTableColumn>;
+  columns: Readonly<Array<ICollapsibleTableColumn>>;
   rows: Array<ICollapsibleTableRow>;
   selectedRows: Array<string>;
 }

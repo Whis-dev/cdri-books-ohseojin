@@ -1,3 +1,4 @@
+import type { SEARCH_BOOK_TARGET } from '@/constants/book';
 import type { IDocument, IMeta } from '@/types/book';
 import { requestAPI } from '@/utils/api';
 
@@ -6,6 +7,7 @@ interface IRequestBooksParams
   query: string;
   page?: number;
   size?: number;
+  target?: keyof typeof SEARCH_BOOK_TARGET;
 }
 
 interface IRequestBooksResponse {
