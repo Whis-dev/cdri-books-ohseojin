@@ -9,7 +9,12 @@ import {
 import { BOOK_COLUMNS } from '@/constants/book';
 import type { IDocument } from '@/types/book';
 
-import { LikeFillIcon, LikeLineIcon } from 'icons/index';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  LikeFillIcon,
+  LikeLineIcon,
+} from 'icons/index';
 import CollapsibleTable from '@/components/common/data-display/CollapsibleTable';
 import Typography from '@/components/common/data-display/Typography';
 import Button from '@/components/common/form/Button';
@@ -148,9 +153,16 @@ export default function BookList({ data, infiniteRowId }: IBookListProps) {
             onClick={handleClickBookDetail(book.isbn)}
             css={{
               marginLeft: '8px',
+
+              '& > span': {
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+              },
             }}
           >
             상세보기
+            <ChevronDownIcon />
           </Button>
         ),
         detail: (
@@ -280,9 +292,15 @@ export default function BookList({ data, infiniteRowId }: IBookListProps) {
                 css={{
                   marginLeft: '8px',
                   marginBottom: 'auto',
+
+                  '& > span': {
+                    display: 'flex',
+                    gap: '4px',
+                  },
                 }}
               >
                 상세보기
+                <ChevronUpIcon />
               </Button>
 
               <Typography
