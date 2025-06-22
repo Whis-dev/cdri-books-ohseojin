@@ -13,21 +13,21 @@ node: v22.12.0
 1. root folder에 .env 파일 세팅
 2. package install (pnpm으로 세팅 되어 있습니다.)
 
-```shell
-pnpm install
-```
+   ```shell
+   pnpm install
+   ```
 
 3. 실행
 
-```shell
-pnpm dev  # 실행 후 localhost:3000으로 접속
-```
+   ```shell
+   pnpm dev  # 실행 후 localhost:3000으로 접속
+   ```
 
 ## 폴더 구조 및 주요 코드 설명
 
 ### 폴더 구조
 
-```
+```text
 cdri-books-ohseojin
 ├─ .prettierrc
 ├─ README.md
@@ -124,12 +124,12 @@ cdri-books-ohseojin
 
 1. Jotai
 
-- 책 검색 키워드에 대한 관리를 합니다. 키워드가 8개 이상일 경우 마지막 키워드는 지워주고, 중복된 키워드를 입력했을 경우 기존에 중복된 내용을 삭제한 뒤, 최근 입력한 키워드가 되도록 설정합니다.
-- 처음에는 찜 목록도 atom으로 관리를 했으나, 페이지네이션을 하기에 indexedDB를 사용하는 것이 더 간단해 보여, 찜을 한 간단한 목록만 관리하도록 변경했습니다. 이는 '도서 검색' 페이지에서 빠르게 찜한 목록을 체크하기 위함입니다. (indexedDB를 통해 찜한 목록을 가져오는 것은 비동기 형태로 가져오기 때문에)
+   - 책 검색 키워드에 대한 관리를 합니다. 키워드가 8개 이상일 경우 마지막 키워드는 지워주고, 중복된 키워드를 입력했을 경우 기존에 중복된 내용을 삭제한 뒤, 최근 입력한 키워드가 되도록 설정합니다.
+   - 처음에는 찜 목록도 atom으로 관리를 했으나, 페이지네이션을 하기에 indexedDB를 사용하는 것이 더 간단해 보여, 찜을 한 간단한 목록만 관리하도록 변경했습니다. 이는 '도서 검색' 페이지에서 빠르게 찜한 목록을 체크하기 위함입니다. (indexedDB를 통해 찜한 목록을 가져오는 것은 비동기 형태로 가져오기 때문에)
 
 2. @emotion/react, @emotion/styled
 
-- material ui를 사용할까, 직접 구현할까 고민하다가 직접 구현하기로 하고 emotion을 사용했습니다. tailwind 대신 emotion 을 사용하는 것은 약간의 개인 취향이기도 한데, tailwind의 경우 화면상에서 className이 길어지는 것이 확인하기 번거로움이 있어서 개인적으로는 emotion을 선호하는 편입니다.
+   - material ui를 사용할까, 직접 구현할까 고민하다가 직접 구현하기로 하고 emotion을 사용했습니다. tailwind 대신 emotion 을 사용하는 것은 약간의 개인 취향이기도 한데, tailwind의 경우 화면상에서 className이 길어지는 것이 확인하기 번거로움이 있어서 개인적으로는 emotion을 선호하는 편입니다.
 
 ## 강조 하고 싶은 기능
 
@@ -137,4 +137,4 @@ cdri-books-ohseojin
 
    - 간단하게 intersection observer를 이용하여, trigger를 시켜 페이지를 정해진 아이템의 수만큼 가져오도록 작업했습니다.
 
-2. indexedDB를 사용한 Favorite Books 화면 처리
+2. indexedDB를 사용한 Favorite Books 화면 처리를 하려고 했으나(utils > indexedDB, apis > indexedDB, hooks > query > useCreateFavoriteBookQuery, useDeleteFavoriteBookQuery, useFavoriteBooksQuery 참고), jotai에서 item을 저장할 때 splice로 잘라서 넣어 놓으면 유사 pagination처럼 동작하지 않을까 하여(이 방법을 옛날에 사용한 적이 있었는데 늦게 생각났습니다..), 코드 상으로 잘라서 pagination을 구현한 상태입니다. indexedDB 연관한 코드는 사용하지 않았지만 남겨놓았습니다
