@@ -9,7 +9,7 @@ import {
 } from '@/atoms/book/action';
 import type { IUseBooksQueryParams } from '@/hooks/query/useBooksQuery';
 
-import { CloseIcon, SearchIcon } from 'icons/index';
+import { CloseIcon, SearchIcon } from '@/assets/icons/index';
 import Button from '@/components/common/form/Button';
 import Typography from '@/components/common/data-display/Typography';
 

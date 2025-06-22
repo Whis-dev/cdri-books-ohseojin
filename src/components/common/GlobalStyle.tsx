@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/react';
 
-import NotoSansKRMedium from 'fonts/NotoSansKR-Medium.ttf?url';
+import NotoSansKRMedium from '@/assets/fonts/NotoSansKR-Medium.ttf?url';
 
 export default function GlobalStyle() {
   return (

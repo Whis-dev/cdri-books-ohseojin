@@ -17,9 +17,7 @@
     "jsxImportSource": "@emotion/react",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "fonts/*": ["./public/fonts/*"],
-      "icons/*": ["./public/icons/*"]
+      "@/*": ["./src/*"]
     },
     "types": ["vite-plugin-svgr/client"],
 

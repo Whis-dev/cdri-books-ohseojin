@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { ChevronDownIcon, ChevronUpIcon } from 'icons/index';
+import { ChevronDownIcon, ChevronUpIcon } from '@/assets/icons/index';
 import Typography from '@/components/common/data-display/Typography';
 import Popover from '@/components/common/surface/Popover';
 

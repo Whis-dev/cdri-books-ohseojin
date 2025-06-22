@@ -9,8 +9,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      fonts: path.resolve(__dirname, 'public/fonts'),
-      icons: path.resolve(__dirname, 'public/icons'),
     },
   },
 });

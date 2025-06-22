@@ -6,7 +6,7 @@ import { getFavoriteBooksAction } from '@/atoms/book/action';
 import useIntersectionObserver from '@/hooks/common/useIntersectionObserver';
 import type { IDocument } from '@/types/book';
 
-import { BookIcon } from 'icons/index';
+import { BookIcon } from '@/assets/icons/index';
 import Typography from '@/components/common/data-display/Typography';
 import Nothing from '@/components/common/feedback/Nothing';
 import BookList from '@/components/book/BookList';

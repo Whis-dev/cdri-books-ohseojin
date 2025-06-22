@@ -14,7 +14,7 @@ import {
   ChevronUpIcon,
   LikeFillIcon,
   LikeLineIcon,
-} from 'icons/index';
+} from '@/assets/icons/index';
 import CollapsibleTable from '@/components/common/data-display/CollapsibleTable';
 import Typography from '@/components/common/data-display/Typography';
 import Button from '@/components/common/form/Button';
