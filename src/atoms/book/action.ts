@@ -2,6 +2,7 @@ import { atom } from 'jotai';
 
 import { bookKeywordsAtom, favoriteBooksAtom } from './atom';
 import type { IDocument } from '@/types/book';
+import { formatTwoDimension } from '@/utils/formatter';
 
 const getBookKeywordsAction = atom(get => get(bookKeywordsAtom));
 
@@ -37,7 +38,7 @@ const setFavoriteBooksAction = atom(
         favoriteBooks: prevFavoriteBooks,
       }: {
         favoriteBookIds: Array<string>;
-        favoriteBooks: Array<IDocument>;
+        favoriteBooks: Array<Array<IDocument>>;
       }) => {
         const isExistFavoriteBook = prevFavoriteBookIds.find(
           prevFavoriteBookId => prevFavoriteBookId === newFavoriteBook.isbn,
@@ -49,14 +50,21 @@ const setFavoriteBooksAction = atom(
                 prevFavoriteBookId =>
                   prevFavoriteBookId !== newFavoriteBook.isbn,
               ),
-              favoriteBooks: prevFavoriteBooks.filter(
-                prevFavoriteBook =>
-                  prevFavoriteBook.isbn !== newFavoriteBook.isbn,
+              favoriteBooks: formatTwoDimension(
+                prevFavoriteBooks
+                  .flat()
+                  .filter(
+                    prevFavoriteBook =>
+                      prevFavoriteBook.isbn !== newFavoriteBook.isbn,
+                  ),
               ),
             }
           : {
               favoriteBookIds: [...prevFavoriteBookIds, newFavoriteBook.isbn],
-              favoriteBooks: [...prevFavoriteBooks, newFavoriteBook],
+              favoriteBooks: formatTwoDimension([
+                ...prevFavoriteBooks.flat(),
+                newFavoriteBook,
+              ]),
             };
       },
     ),

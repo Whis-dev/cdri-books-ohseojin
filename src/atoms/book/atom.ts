@@ -6,7 +6,7 @@ const bookKeywordsAtom = atomWithStorage<Array<string>>('bookKeywords', []);
 
 const favoriteBooksAtom = atomWithStorage<{
   favoriteBookIds: Array<string>;
-  favoriteBooks: Array<IDocument>;
+  favoriteBooks: Array<Array<IDocument>>;
 }>('favoriteBooks', {
   favoriteBookIds: [],
   favoriteBooks: [],

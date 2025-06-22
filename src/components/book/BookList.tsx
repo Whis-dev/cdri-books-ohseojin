@@ -52,7 +52,7 @@ export default function BookList({ data, infiniteRowId }: IBookListProps) {
 
   const generatedTableRows = useMemo(
     () =>
-      data.map(book => ({
+      (data || []).map(book => ({
         key: book.isbn,
         thumbnail: (
           <button

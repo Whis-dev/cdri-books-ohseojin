@@ -20,4 +20,19 @@ const formatQueryParameter = (params?: TRequestParams): string => {
   }
 };
 
-export { formatQueryParameter };
+const formatTwoDimension = <T>(
+  original: Array<T>,
+  itemLength: number = 10,
+): Array<Array<T>> => {
+  const twoDimension = [];
+
+  while (original.length > 0) {
+    twoDimension.push(original.splice(0, itemLength));
+  }
+
+  console.log(twoDimension);
+
+  return twoDimension;
+};
+
+export { formatQueryParameter, formatTwoDimension };
