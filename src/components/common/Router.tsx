@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router';
 
 import Wrapper from '@/components/common/layout/Wrapper';
-import SearchBook from '@/conatainers/search-book';
-import FavoriteBook from '@/conatainers/favorite-book';
+import SearchBook from '@/containers/search-book';
+import FavoriteBook from '@/containers/favorite-book';
 
 export default function Router() {
   return (
