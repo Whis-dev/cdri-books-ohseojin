@@ -5,6 +5,7 @@ import { TYPOGRAPHY_VARIANT_STYLE } from '@/constants/theme';
 
 interface ITypographyProps extends PropsWithChildren {
   variant?: keyof typeof TYPOGRAPHY_VARIANT_STYLE;
+  [x: string]: unknown;
 }
 
 const StyledTypography = styled.span<{
@@ -28,11 +29,13 @@ const StyledTypography = styled.span<{
 export default function Typography({
   variant = 'body1',
   children,
+  ...rest
 }: ITypographyProps) {
   return (
     <StyledTypography
       variant={variant}
       as={/title/.test(variant) ? 'h2' : 'span'}
+      {...rest}
     >
       {children}
     </StyledTypography>
