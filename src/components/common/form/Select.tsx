@@ -1,31 +1,39 @@
 import { useRef, useState } from 'react';
+import { useTheme } from '@emotion/react';
 
 import { ChevronDownIcon, ChevronUpIcon } from '@/assets/icons/index';
 import Typography from '@/components/common/data-display/Typography';
 import Popover from '@/components/common/surface/Popover';
+import Button from '@/components/common/form/Button';
 
-type TSelectOption = {
+export type TSelectOption = {
   label: string;
   value: string;
 };
 
 interface ISelectProps {
-  defaultValue: string;
+  selectedOption: TSelectOption;
   options: Array<TSelectOption>;
+  onClickSelectValue: (option: TSelectOption) => void;
 }
 
-export default function Select({ defaultValue, options }: ISelectProps) {
+export default function Select({
+  selectedOption,
+  options,
+  onClickSelectValue,
+}: ISelectProps) {
   const [isOpen, setOpen] = useState<boolean>(false);
-  const [selectedValue, setSelectedValue] = useState<string>('');
 
   const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const theme = useTheme();
 
   const handleClickOpen = () => {
     setOpen(prev => !prev);
   };
 
-  const handleClickSelectOption = (value: string) => () => {
-    setSelectedValue(value);
+  const handleClickSelectOption = (option: TSelectOption) => () => {
+    onClickSelectValue(option);
     setOpen(prev => !prev);
   };
 
@@ -38,15 +46,21 @@ export default function Select({ defaultValue, options }: ISelectProps) {
           ref={triggerRef}
           css={{
             display: 'flex',
+            padding: '0px 4px 0px 8px',
             width: '100px',
             height: '36px',
             alignItems: 'center',
+            border: 'none',
             borderBottom: '1px solid #D2D6DA',
+            backgroundColor: 'transparent',
+
+            '> span': {
+              marginRight: 'auto',
+            },
           }}
         >
-          <Typography variant="body2bold">
-            {selectedValue || defaultValue}
-          </Typography>
+          <Typography variant="body2bold">{selectedOption.label}</Typography>
+
           {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
         </button>
       }
@@ -55,23 +69,44 @@ export default function Select({ defaultValue, options }: ISelectProps) {
           css={{
             position: 'absolute',
             width: '100px',
-            top: triggerRef.current?.getBoundingClientRect().top,
+            top:
+              (triggerRef.current?.getBoundingClientRect().top || 0) + 36 + 6,
             left: triggerRef.current?.getBoundingClientRect().left,
             boxShadow: '0px 0px 4px 0px #00000040',
+            backgroundColor: theme.color.palette.white,
             zIndex: 30,
           }}
         >
-          {options.map(({ label, value }) => (
-            <li
-              key={value}
-              onClick={handleClickSelectOption(value)}
-              css={{
-                height: '30px',
-              }}
-            >
-              <Typography variant="caption">{label}</Typography>
-            </li>
-          ))}
+          {options
+            .filter(({ value }) => value !== selectedOption.value)
+            .map(({ label, value }) => (
+              <li
+                key={`select-option-${value}`}
+                css={{
+                  height: '30px',
+                }}
+              >
+                <Button
+                  icon
+                  fullWidth
+                  onClick={handleClickSelectOption({ label, value })}
+                  css={{
+                    padding: '4px 8px',
+                    justifyContent: 'flex-start',
+                    height: '30px',
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    css={{
+                      lineHeight: '22px',
+                    }}
+                  >
+                    {label}
+                  </Typography>
+                </Button>
+              </li>
+            ))}
         </ul>
       }
     />
