@@ -47,6 +47,8 @@ const StyledButton = styled.button<IButtonProps>`
       ? props.theme.color.palette.white
       : props.color === 'primary'
       ? props.theme.color.palette.primary
+      : props.icon
+      ? 'transparent'
       : props.theme.color.palette.lightGray};
 
   &:hover {
