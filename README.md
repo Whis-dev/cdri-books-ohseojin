@@ -148,3 +148,7 @@ cdri-books-ohseojin
    - 코드상으로 유사 pagination 구현한 부분: atoms > book > action.ts, utils > formatter.ts
 
 3. 화면 구현에서 테이블 영역은 화면을 넘어가지 않고 테이블 영역만 스크롤 되게 구현했습니다.
+
+## 기타
+
+1. 원래는 깃 플로우 등의 정책으로 깃을 관리하지만 혼자 작업하는 project여서 main branch 하나로 작업했습니다.
