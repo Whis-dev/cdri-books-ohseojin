@@ -30,7 +30,6 @@ node: v22.12.0
 ```text
 cdri-books-ohseojin
 ├─ .prettierrc
-├─ README.md
 ├─ emotion.d.ts
 ├─ eslint.config.js
 ├─ image.d.ts
@@ -38,39 +37,40 @@ cdri-books-ohseojin
 ├─ package.json
 ├─ pnpm-lock.yaml
 ├─ public
-│  ├─ fonts
-│  │  ├─ NotoSansKR-Bold.ttf
-│  │  └─ NotoSansKR-Medium.ttf
-│  └─ icons
-│     ├─ book.svg
-│     ├─ chevron-down.svg
-│     ├─ chevron-up.svg
-│     ├─ close.svg
-│     ├─ index.ts
-│     ├─ like-fill.svg
-│     ├─ like-line.svg
-│     └─ search.svg
+├─ README.md
 ├─ src
-│  ├─ App.tsx
 │  ├─ apis
-│  │  ├─ external
+│  │  ├─ external                         // Kakao API 처럼 외부에서 접근하는 api 모음
 │  │  │  ├─ index.ts
 │  │  │  └─ requestBooks.ts
-│  │  └─ indexedDB
+│  │  └─ indexedDB                        // indexedDB를 api처럼 호출하도록 작업 (사용하지 않고 있음)
 │  │     ├─ createFavoriteBook.ts
 │  │     ├─ deleteFavoriteBook.ts
 │  │     ├─ index.ts
 │  │     └─ requestFavoriteBooks.ts
+│  ├─ App.tsx
+│  ├─ assets
+│  │  ├─ fonts
+│  │  │  ├─ NotoSansKR-Bold.ttf
+│  │  │  └─ NotoSansKR-Medium.ttf
+│  │  └─ icons
+│  │     ├─ book.svg
+│  │     ├─ chevron-down.svg
+│  │     ├─ chevron-up.svg
+│  │     ├─ close.svg
+│  │     ├─ index.ts
+│  │     ├─ like-fill.svg
+│  │     ├─ like-line.svg
+│  │     └─ search.svg
 │  ├─ atoms
-│  │  └─ book
+│  │  └─ book                              // searchKeyword와 favoriteBooks에 관련한 atom과 action이 있음
 │  │     ├─ action.ts
 │  │     └─ atom.ts
 │  ├─ components
 │  │  ├─ book
-│  │  │  └─ BookList.tsx
-│  │  └─ common
-│  │     ├─ GlobalStyle.tsx
-│  │     ├─ Router.tsx
+│  │  │  ├─ BookList.tsx                   // 각 페이지에서 사용하는 BookList가 공통으로 사용되는 부분이 많아 공통화함
+│  │  │  └─ BookSearchForm.tsx
+│  │  └─ common                            // 공통으로 사용하는 컴포넌트 작업. 폴더이름은 material-ui에서 참고하여 분리함.
 │  │     ├─ data-display
 │  │     │  ├─ CollapsibleTable.tsx
 │  │     │  └─ Typography.tsx
@@ -79,37 +79,39 @@ cdri-books-ohseojin
 │  │     ├─ form
 │  │     │  ├─ Button.tsx
 │  │     │  └─ Select.tsx
+│  │     ├─ GlobalStyle.tsx
 │  │     ├─ layout
 │  │     │  └─ Wrapper.tsx
 │  │     ├─ navigator
 │  │     │  └─ Tab.tsx
+│  │     ├─ Router.tsx                     // 프로젝트 라우터
 │  │     └─ surface
 │  │        └─ Popover.tsx
-│  ├─ constants
+│  ├─ constants                            // theme 외 공통으로 사용하는 상수들의 모음
 │  │  ├─ book.ts
 │  │  └─ theme.ts
-│  ├─ containers
+│  ├─ containers                           // page
 │  │  ├─ favorite-book
 │  │  │  └─ index.tsx
 │  │  └─ search-book
 │  │     └─ index.tsx
 │  ├─ hooks
 │  │  ├─ common
-│  │  │  └─ useIntersectionObserver.ts
+│  │  │  └─ useIntersectionObserver.ts     // 무한스크롤 구현을 위한 간단한 intersection observer hook
 │  │  └─ query
-│  │     ├─ useBooksQuery.ts
-│  │     ├─ useCreateFavoriteBookQuery.ts
-│  │     ├─ useDeleteFavoriteBookQuery.ts
-│  │     └─ useFavoriteBooksQuery.ts
+│  │     ├─ useBooksQuery.ts               // Kakao API에서 호출한 책의 목록을 관리하는 쿼리
+│  │     ├─ useCreateFavoriteBookQuery.ts  // indexed DB 관련 query
+│  │     ├─ useDeleteFavoriteBookQuery.ts  // indexed DB 관련 query
+│  │     └─ useFavoriteBooksQuery.ts       // indexed DB 관련 query
 │  ├─ main.tsx
 │  ├─ queryKey
 │  │  └─ book.ts
-│  ├─ types
+│  ├─ types                                // 공통으로 사용하는 타입들의 모음
 │  │  └─ book.ts
 │  ├─ utils
-│  │  ├─ api.ts
+│  │  ├─ api.ts                            // fetch로 만든 공통 모듈
 │  │  ├─ formatter.ts
-│  │  └─ indexedDB.ts
+│  │  └─ indexedDB.ts                      // indexedDB initializer
 │  └─ vite-env.d.ts
 ├─ tsconfig.app.json
 ├─ tsconfig.json
@@ -119,6 +121,10 @@ cdri-books-ohseojin
 ```
 
 ### 코드 설명
+
+1. props의 메서드 명은 onClick 등의 prefix로, 컴포넌트 내부에서 사용하는 이벤트 handler의 이름은 handle~의 prefix를 사용했습니다.
+2. Popover component는 정말 간단하게만 구현했습니다. 원래대로라면, offset이나 position 값을 받아와서 내부에서 처리했어야합니다.
+3. 검색 키워드와, 찜한 목록은 localStorage에 저장하여 관리하도록 했습니다. (요구사항)
 
 ## 설치된 라이브러리 및 설명
 
@@ -137,4 +143,8 @@ cdri-books-ohseojin
 
    - 간단하게 intersection observer를 이용하여, trigger를 시켜 페이지를 정해진 아이템의 수만큼 가져오도록 작업했습니다.
 
-2. indexedDB를 사용한 Favorite Books 화면 처리를 하려고 했으나(utils > indexedDB, apis > indexedDB, hooks > query > useCreateFavoriteBookQuery, useDeleteFavoriteBookQuery, useFavoriteBooksQuery 참고), jotai에서 item을 저장할 때 splice로 잘라서 넣어 놓으면 유사 pagination처럼 동작하지 않을까 하여(이 방법을 옛날에 사용한 적이 있었는데 늦게 생각났습니다..), 코드 상으로 잘라서 pagination을 구현한 상태입니다. indexedDB 연관한 코드는 사용하지 않았지만 남겨놓았습니다
+2. indexedDB를 사용한 Favorite Books 화면 처리를 하려고 했으나(utils > indexedDB, apis > indexedDB, hooks > query > useCreateFavoriteBookQuery, useDeleteFavoriteBookQuery, useFavoriteBooksQuery 참고), jotai에서 item을 저장할 때 splice로 잘라서 넣어 놓으면 유사 pagination처럼 동작하지 않을까 하여(이 방법을 옛날에 사용한 적이 있었는데 늦게 생각났습니다..), 코드 상으로 잘라서 pagination을 구현한 상태입니다. indexedDB 연관한 코드는 사용하지 않았지만 남겨놓았습니다.
+
+   - 코드상으로 유사 pagination 구현한 부분: atoms > book > action.ts, utils > formatter.ts
+
+3. 화면 구현에서 테이블 영역은 화면을 넘어가지 않고 테이블 영역만 스크롤 되게 구현했습니다.
